@@ -1,13 +1,45 @@
 package group_id;
 
 import static io.restassured.RestAssured.*; // OVO MORA RUCNO DA SE IMPORTUJE
+import static org.hamcrest.Matchers.*; // i ovo
 
+import Files.payload;
 import io.restassured.RestAssured;
+import io.restassured.path.json.JsonPath;
 
 public class Basics {
 
   public static void main(String[] args) {
     RestAssured.baseURI = "https://rahulshettyacademy.com";
+
+    // vezbanje =>  1) ADD new place, 2) Update place with new adress, 3)Get place to validate if new adress is present in reponse
+
+    //          1)  ADD NEW PLACE
+    String response = given()
+      .log()
+      .all()
+      .queryParam("key", "qaclick123")
+      .header("Content-Type", "application/json")
+      .body(payload.AddPlace()) // ovde smo izbacili JSON u drugi fajl 'payload.java' i importovali ga
+      .when()
+      .post("maps/api/place/add/json")
+      .then()
+      .assertThat()
+      .statusCode(200)
+      .body("scope", equalTo("APP"))
+      .header("Server", "Apache/2.4.41 (Ubuntu)")
+      .extract()
+      .response()
+      .asString();
+
+    System.out.println(response);
+
+    JsonPath jsn = new JsonPath(response); // ova klasa uzima String kao input i konvertuje ga u JSON i parsuje ga
+
+    String placeId = jsn.getString("place_id");
+
+    System.out.println(placeId);
+    //  2)  UPDATE PLACE with NEW adress
 
     given()
       .log()
@@ -15,14 +47,17 @@ public class Basics {
       .queryParam("key", "qaclick123")
       .header("Content-Type", "application/json")
       .body(
-        "{\r\n      \"location\": {\r\n        \"lat\": -38.383494,\r\n        \"lng\": 33.427362\r\n      },\r\n      \"accuracy\": 50,\r\n      \"name\": \"ASSESS\",\r\n      \"phone_number\": \"(+91) 983 893 3937\",\r\n      \"address\": \"29, side layout, cohen 09\",\r\n      \"types\": [\r\n        \"shoe park\",\r\n        \"shop\"\r\n      ],\r\n      \"website\": \"http://google.com\",\r\n      \"language\": \"French-IN\"\r\n    }"
+        "{\r\n   \r\n      \"place_id\": \"" +
+        placeId +
+        "\",\r\n      \"address\": \"Upoje 4 Upojevic\",\r\n      \"key\": \"qaclick123\"\r\n     \r\n  }"
       )
       .when()
-      .post("maps/api/place/add/json")
+      .put("maps/api/place/update/json")
       .then()
+      .assertThat()
       .log()
       .all()
-      .assertThat()
-      .statusCode(200);
+      .statusCode(200)
+      .body("msg", equalTo("Address successfully updated"));
   }
 }
