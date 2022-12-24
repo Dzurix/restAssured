@@ -4,8 +4,10 @@ import static io.restassured.RestAssured.*; // OVO MORA RUCNO DA SE IMPORTUJE
 import static org.hamcrest.Matchers.*; // i ovo
 
 import Files.payload;
+import Files.reusableMethods;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
+import org.testng.Assert;
 
 public class Basics {
 
@@ -41,6 +43,8 @@ public class Basics {
     System.out.println(placeId);
     //  2)  UPDATE PLACE with NEW adress
 
+    String newAddress = "Upoja IV upojevica br. U";
+
     given()
       .log()
       .all()
@@ -49,7 +53,9 @@ public class Basics {
       .body(
         "{\r\n   \r\n      \"place_id\": \"" +
         placeId +
-        "\",\r\n      \"address\": \"Upoje 4 Upojevic\",\r\n      \"key\": \"qaclick123\"\r\n     \r\n  }"
+        "\",\r\n      \"address\": \"" +
+        newAddress +
+        "\",\r\n      \"key\": \"qaclick123\"\r\n     \r\n  }"
       )
       .when()
       .put("maps/api/place/update/json")
@@ -59,5 +65,30 @@ public class Basics {
       .all()
       .statusCode(200)
       .body("msg", equalTo("Address successfully updated"));
+
+    // GET place to validate change of adress
+
+    String getPlaceResponse = given()
+      .log()
+      .all()
+      .queryParam("key", "qaclick123")
+      .queryParam("place_id", placeId)
+      .when()
+      .get("maps/api/place/get/json")
+      .then()
+      .assertThat()
+      .log()
+      .all()
+      .statusCode(200)
+      .extract()
+      .response()
+      .asString();
+
+    JsonPath jsn1 = reusableMethods.rawToJson(getPlaceResponse); //optimizacija kreiranjem posebnog fajla 'reusableMethods.java'
+    String actualAddress = jsn1.getString("address");
+
+    System.out.println(actualAddress);
+    // testNG assertions
+    //  Assert.assertEquals(actualAddress, newAddress);
   }
 }
