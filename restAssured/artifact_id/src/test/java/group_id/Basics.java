@@ -7,11 +7,14 @@ import Files.payload;
 import Files.reusableMethods;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import org.testng.Assert;
 
 public class Basics {
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws IOException {
     RestAssured.baseURI = "https://rahulshettyacademy.com";
 
     // vezbanje =>  1) ADD new place, 2) Update place with new adress, 3)Get place to validate if new adress is present in reponse
@@ -22,7 +25,19 @@ public class Basics {
       .all()
       .queryParam("key", "qaclick123")
       .header("Content-Type", "application/json")
-      .body(payload.AddPlace()) // ovde smo izbacili JSON u drugi fajl 'payload.java' i importovali ga
+      //.body(payload.AddPlace()) // ovde smo izbacili JSON u drugi fajl 'payload.java' i importovali ga
+
+      //ovde cemo direkto koristiti JSON file
+      //logika je sledeca->  pretvaramo content fajla u Byte-> pretvaramo Bytes u STRING
+      .body(
+        new String(
+          Files.readAllBytes(
+            Paths.get(
+              "D:\\cy\\restAssured\\artifact_id\\src\\test\\java\\Files\\addPlace.json"
+            )
+          )
+        )
+      )
       .when()
       .post("maps/api/place/add/json")
       .then()
