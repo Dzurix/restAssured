@@ -20,19 +20,22 @@ public class Utils {
   public RequestSpecification requestSpecification() throws IOException {
     PrintStream log = new PrintStream(new FileOutputStream("logging.txt")); //kreiranje fajla gde ce se sve logovati
 
+    RestAssured.baseURI = "https://rahulshettyacademy.com";
+
     // kreiranje REQUEST
     req =
       new RequestSpecBuilder()
-        .setBaseUri(getGlobalValue("baseUrl"))
+        .setBaseUri("https://rahulshettyacademy.com")
         .addQueryParam("key", "qaclick123")
-        .addFilter(RequestLoggingFilter.logRequestTo(log)) //LOGOVANJE SVEGA preko objekta (u ovom slucaju 'stream')
-        .addFilter(ResponseLoggingFilter.logResponseTo(log)) //logovanje responsa
+        .addFilter(RequestLoggingFilter.logRequestTo(log)) // OVO je umesto log().all() pomocu kojeg se LOGUJE REQUEST
+        .addFilter(ResponseLoggingFilter.logResponseTo(log)) // ovo je logovanje RESPONSA
         .setContentType(ContentType.JSON)
         .build();
 
     return req;
   }
 
+  // OVAJ METOD KORISTIM DA KAZEM GDE SE NALAZI global.properties FILE SA podacima
   public static String getGlobalValue(String key) throws IOException {
     Properties prop = new Properties();
     //ovde govorim gde se nalazi inputFIle

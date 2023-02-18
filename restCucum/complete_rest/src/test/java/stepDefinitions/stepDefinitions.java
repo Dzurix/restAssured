@@ -24,7 +24,7 @@ import java.util.List;
 import pojo.Location;
 import pojo.addPlace;
 
-public class stepDefinitions {
+public class stepDefinitions extends Utils {
 
   RequestSpecification res;
   ResponseSpecification resSpec;
@@ -33,27 +33,13 @@ public class stepDefinitions {
 
   @Given("^Add Place Payload$")
   public void add_place_payload() throws IOException {
-    RestAssured.baseURI = "https://rahulshettyacademy.com";
-
-    // kreiranje REQUEST
-    RequestSpecification req = new RequestSpecBuilder()
-      .setBaseUri("https://rahulshettyacademy.com")
-      .addQueryParam("key", "qaclick123")
-      .setContentType(ContentType.JSON)
-      .build();
-
-    // kreiranje RESPONSA
-    resSpec =
-      new ResponseSpecBuilder()
-        .expectStatusCode(200)
-        .expectContentType(ContentType.JSON)
-        .build();
-
-    res = given().spec(req).body(data.addPlacePayload()); //odvajamo body}
+    res = given().spec(requestSpecification()).body(data.addPlacePayload()); //odvajamo body}
   }
 
   @When("^user calls \"([^\"]*)\" with Post http request$")
   public void user_calls_something_with_post_http_request(String strArg1) {
+    // kreiranje RESPONSA
+
     resSpec =
       new ResponseSpecBuilder()
         .expectStatusCode(200)
