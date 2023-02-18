@@ -31,9 +31,16 @@ public class stepDefinitions extends Utils {
   Response response;
   TestDataBuild data = new TestDataBuild(); //kreiranje objekta od klase
 
-  @Given("^Add Place Payload$")
-  public void add_place_payload() throws IOException {
-    res = given().spec(requestSpecification()).body(data.addPlacePayload()); //odvajamo body}
+  @Given("^Add Place Payload with \"([^\"]*)\" \"([^\"]*)\" \"([^\"]*)\"$")
+  public void add_place_payload_with_something_something_something(
+    String name,
+    String language,
+    String address
+  ) throws Throwable {
+    res =
+      given()
+        .spec(requestSpecification())
+        .body(data.addPlacePayload(name, language, address)); //odvajamo body}
   }
 
   @When("^user calls \"([^\"]*)\" with Post http request$")

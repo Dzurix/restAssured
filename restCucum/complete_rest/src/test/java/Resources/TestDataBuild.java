@@ -7,15 +7,19 @@ import pojo.addPlace;
 
 public class TestDataBuild {
 
-  public addPlace addPlacePayload() {
+  public addPlace addPlacePayload(
+    String name,
+    String language,
+    String address
+  ) {
     addPlace p = new addPlace();
 
     p.setAccuracy(50);
-    p.setAddress("Moja ulica");
-    p.setLanguage("jezik");
+    p.setAddress(address);
+    p.setLanguage(language);
     p.setPhone_number("+381650650652");
     p.setWebsite("https://assess.rs");
-    p.setName("MojeIme");
+    p.setName(name);
 
     //setovanje tipova
     List<String> myList = new ArrayList<String>();

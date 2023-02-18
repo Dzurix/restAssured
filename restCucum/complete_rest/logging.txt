@@ -12,11 +12,11 @@ Multiparts:		<none>
 Body:
 {
     "accuracy": 50,
-    "name": "MojeIme",
+    "name": "AAhouse",
     "phone_number": "+381650650652",
-    "address": "Moja ulica",
+    "address": "World cross center",
     "website": "https://assess.rs",
-    "language": "jezik",
+    "language": "English",
     "location": {
         "lat": -38.383494,
         "lng": 33.427362
@@ -27,7 +27,7 @@ Body:
     ]
 }
 HTTP/1.1 200 OK
-Date: Sat, 18 Feb 2023 05:13:48 GMT
+Date: Sat, 18 Feb 2023 05:51:08 GMT
 Server: Apache/2.4.41 (Ubuntu)
 Access-Control-Allow-Origin: *
 Access-Control-Allow-Methods: POST
@@ -40,8 +40,8 @@ Content-Type: application/json;charset=UTF-8
 
 {
     "status": "OK",
-    "place_id": "303416f3bf366f46497b05e784e94ab7",
+    "place_id": "81034e9a15f3f9089e4611ad53362e92",
     "scope": "APP",
-    "reference": "fd7bc4d235e12c9e7026822334e1a084fd7bc4d235e12c9e7026822334e1a084",
-    "id": "fd7bc4d235e12c9e7026822334e1a084"
+    "reference": "d855acd8464cb230a3377edc7435b3b5d855acd8464cb230a3377edc7435b3b5",
+    "id": "d855acd8464cb230a3377edc7435b3b5"
 }

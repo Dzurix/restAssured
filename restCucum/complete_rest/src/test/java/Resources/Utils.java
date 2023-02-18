@@ -20,12 +20,12 @@ public class Utils {
   public RequestSpecification requestSpecification() throws IOException {
     PrintStream log = new PrintStream(new FileOutputStream("logging.txt")); //kreiranje fajla gde ce se sve logovati
 
-    RestAssured.baseURI = "https://rahulshettyacademy.com";
+    // RestAssured.baseURI = "https://rahulshettyacademy.com";
 
     // kreiranje REQUEST
     req =
       new RequestSpecBuilder()
-        .setBaseUri("https://rahulshettyacademy.com")
+        .setBaseUri(getGlobalValue("baseUrl"))
         .addQueryParam("key", "qaclick123")
         .addFilter(RequestLoggingFilter.logRequestTo(log)) // OVO je umesto log().all() pomocu kojeg se LOGUJE REQUEST
         .addFilter(ResponseLoggingFilter.logResponseTo(log)) // ovo je logovanje RESPONSA
@@ -41,7 +41,7 @@ public class Utils {
     //ovde govorim gde se nalazi inputFIle
 
     FileInputStream fis = new FileInputStream(
-      "restCucum/complete_rest/src/test/java/Resources/global.properties"
+      "D:/cy/restAssured/restCucum/complete_rest/src/test/java/Resources/global.properties"
     );
 
     prop.load(fis); // povezujem ih
