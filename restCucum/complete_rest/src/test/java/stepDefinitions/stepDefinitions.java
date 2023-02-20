@@ -3,6 +3,7 @@ package stepDefinitions;
 import static io.restassured.RestAssured.*; //OVO MORA RUCNO DA SE IMPORTUJE (ZA GIVEN)
 import static org.junit.Assert.assertEquals;
 
+import Resources.APIresources;
 import Resources.TestDataBuild;
 import Resources.Utils;
 import io.cucumber.java.en.And;
@@ -43,8 +44,13 @@ public class stepDefinitions extends Utils {
         .body(data.addPlacePayload(name, language, address)); //odvajamo body}
   }
 
-  @When("^user calls \"([^\"]*)\" with Post http request$")
-  public void user_calls_something_with_post_http_request(String strArg1) {
+  @When("user calls {string} with {string} http request")
+  public void user_calls_with_http_request(String resource, String method) {
+       
+	  
+	APIresources resourceAPI =   APIresources.valueOf(resource);
+	System.out.println(resourceAPI.getResource());
+	
     // kreiranje RESPONSA
 
     resSpec =
@@ -55,7 +61,7 @@ public class stepDefinitions extends Utils {
     response =
       res
         .when()
-        .post("/maps/api/place/add/json")
+        .post(resourceAPI.getResource()) //OVDE JE SVRHA RADA SA ENUM klasama
         .then()
         .spec(resSpec)
         .extract()

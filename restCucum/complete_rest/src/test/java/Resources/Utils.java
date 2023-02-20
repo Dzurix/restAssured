@@ -15,9 +15,12 @@ import java.util.Properties;
 
 public class Utils {
 
-  RequestSpecification req;
+public static RequestSpecification req; //sada kada smo rekli da je ova varijabla STATIC
+// to znaci NE KREIRAJ NOVU INSTANCU vec ovu varijablu koristi kod svih TEST CASE, nemoj je vracati stalno na NULL prilikom sledeceg testa
 
   public RequestSpecification requestSpecification() throws IOException {
+	  
+	  if(req==null) {
     PrintStream log = new PrintStream(new FileOutputStream("logging.txt")); //kreiranje fajla gde ce se sve logovati
 
     // RestAssured.baseURI = "https://rahulshettyacademy.com";
@@ -33,6 +36,8 @@ public class Utils {
         .build();
 
     return req;
+	  }
+	  return req;
   }
 
   // OVAJ METOD KORISTIM DA KAZEM GDE SE NALAZI global.properties FILE SA podacima
