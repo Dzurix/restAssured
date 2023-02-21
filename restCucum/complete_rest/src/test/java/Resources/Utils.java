@@ -5,6 +5,8 @@ import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;
+import io.restassured.path.json.JsonPath;
+import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -53,4 +55,14 @@ public static RequestSpecification req; //sada kada smo rekli da je ova varijabl
 
     return prop.getProperty(key);
   }
+  
+  //Ovaj metod koristim da izvucem vrednost iz JSONpath, da ne pisem stalno js.get (JSONpath)
+  
+  public String getJsonPath(Response response, String key) {
+	  
+	  String resp = response.asString();
+	   JsonPath js = new JsonPath(resp);
+	  return js.get(key).toString();
+  }
+
 }
