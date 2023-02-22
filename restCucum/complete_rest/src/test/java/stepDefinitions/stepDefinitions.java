@@ -31,6 +31,8 @@ public class stepDefinitions extends Utils {
   ResponseSpecification resSpec;
   Response response;
   TestDataBuild data = new TestDataBuild(); //kreiranje objekta od klase
+  static String place_id;
+  
  
 
   @Given("^Add Place Payload with \"([^\"]*)\" \"([^\"]*)\" \"([^\"]*)\"$")
@@ -85,8 +87,6 @@ public class stepDefinitions extends Utils {
     String expectedValue
   ) {
    
-
-
     assertEquals(getJsonPath(response,keyValue), expectedValue);
   }
   
@@ -94,14 +94,21 @@ public class stepDefinitions extends Utils {
   public void verify_place_id_created_maps_to_ising(String expectedName, String resource) throws IOException {
       
 	  //requestSpec
-	String place_id = getJsonPath(response,"place_id");
+	place_id = getJsonPath(response,"place_id");
 	  res.given().spec(requestSpecification()).queryParam("place_id", place_id);
 	  user_calls_with_http_request(resource,"GET");
 	  
 	  String actualName = getJsonPath(response,"name");
 	  
 	  assertEquals(actualName, expectedName);
+	    }
+  
+  @Given("DeletePlace Payload")
+  public void delete_place_payload() throws IOException {
 	  
-	  
-  }
+	res = given().spec(requestSpecification()).body(data.deletePlacePayload(place_id));
+      
+    
+  } 
+  
 }
